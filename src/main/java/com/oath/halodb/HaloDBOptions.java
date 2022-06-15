@@ -52,6 +52,7 @@ public class HaloDBOptions implements Cloneable {
         } catch (CloneNotSupportedException e) {
             return null;
         }
+
     }
 
     @Override

@@ -43,6 +43,7 @@ public class KyotoStorageEngine implements StorageEngine {
         }
     }
 
+
     @Override
     public void put(byte[] key, byte[] value) {
         db.set(key, value);

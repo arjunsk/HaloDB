@@ -7,6 +7,7 @@
 
 package com.oath.halodb;
 
+
 /**
  * Encapsulates access to hash entries.
  */

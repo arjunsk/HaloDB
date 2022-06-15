@@ -18,17 +18,21 @@ import java.io.IOException;
 class InMemoryIndex {
     private static final Logger logger = LoggerFactory.getLogger(InMemoryIndex.class);
 
+    // This class is a wrapper for offHeapHashTable.
     private final OffHeapHashTable<InMemoryIndexMetaData> offHeapHashTable;
 
     private final int noOfSegments;
     private final int maxSizeOfEachSegment;
 
     InMemoryIndex(int numberOfKeys, boolean useMemoryPool, int fixedKeySize, int memoryPoolChunkSize) {
+        // each core can have 2 segments
         noOfSegments = Ints.checkedCast(Utils.roundUpToPowerOf2(Runtime.getRuntime().availableProcessors() * 2));
         maxSizeOfEachSegment = Ints.checkedCast(Utils.roundUpToPowerOf2(numberOfKeys / noOfSegments));
+
         long start = System.currentTimeMillis();
         OffHeapHashTableBuilder<InMemoryIndexMetaData> builder =
-            OffHeapHashTableBuilder.<InMemoryIndexMetaData>newBuilder()
+            OffHeapHashTableBuilder
+                .<InMemoryIndexMetaData>newBuilder()
                 .valueSerializer(new InMemoryIndexMetaDataSerializer())
                 .segmentCount(noOfSegments)
                 .hashTableSize(maxSizeOfEachSegment)

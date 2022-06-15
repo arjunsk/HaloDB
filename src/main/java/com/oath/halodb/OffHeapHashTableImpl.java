@@ -66,6 +66,7 @@ final class OffHeapHashTableImpl<V> implements OffHeapHashTable<V> {
         this.segmentShift = 64 - bitNum;
         this.segmentMask = ((long) segmentCount - 1) << segmentShift;
 
+        // value serializer
         this.valueSerializer = builder.getValueSerializer();
         if (valueSerializer == null) {
             throw new NullPointerException("valueSerializer == null");

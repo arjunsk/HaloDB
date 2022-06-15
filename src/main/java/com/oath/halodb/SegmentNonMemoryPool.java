@@ -13,6 +13,7 @@ import com.oath.halodb.histo.EstimatedHistogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 class SegmentNonMemoryPool<V> extends Segment<V> {
 
     private static final Logger logger = LoggerFactory.getLogger(SegmentNonMemoryPool.class);
@@ -44,6 +45,7 @@ class SegmentNonMemoryPool<V> extends Segment<V> {
 
         this.hashAlgorithm = builder.getHashAlgorighm();
 
+        // hash table size
         int hts = builder.getHashTableSize();
         if (hts <= 0) {
             hts = 8192;
@@ -51,6 +53,8 @@ class SegmentNonMemoryPool<V> extends Segment<V> {
         if (hts < 256) {
             hts = 256;
         }
+
+        // maximum table size
         int msz = Ints.checkedCast(HashTableUtil.roundUpToPowerOf2(hts, MAX_TABLE_SIZE));
         table = Table.create(msz, throwOOME);
         if (table == null) {
@@ -203,9 +207,12 @@ class SegmentNonMemoryPool<V> extends Segment<V> {
         try {
             long hashEntryAdr;
             long prevEntryAdr = 0L;
+
             for (hashEntryAdr = table.getFirst(hash);
                  hashEntryAdr != 0L;
                  prevEntryAdr = hashEntryAdr, hashEntryAdr = NonMemoryPoolHashEntries.getNext(hashEntryAdr)) {
+
+                // Loop until you find the hashKey
                 if (notSameKey(newHashEntryAdr, hash, keyLen, hashEntryAdr)) {
                     continue;
                 }
@@ -321,12 +328,9 @@ class SegmentNonMemoryPool<V> extends Segment<V> {
             for (long hashEntryAdr = table.getFirst(key.hash());
                  hashEntryAdr != 0L;
                  prevEntryAdr = hashEntryAdr, hashEntryAdr = NonMemoryPoolHashEntries.getNext(hashEntryAdr)) {
-                if (!key.sameKey(hashEntryAdr)) {
-                    continue;
-                }
+                if (!key.sameKey(hashEntryAdr)) continue;
 
                 // remove existing entry
-
                 removeHashEntryAdr = hashEntryAdr;
                 removeInternal(hashEntryAdr, prevEntryAdr, key.hash());
 
@@ -358,17 +362,20 @@ class SegmentNonMemoryPool<V> extends Segment<V> {
         if (newTable == null) {
             return;
         }
-        long next;
 
         Hasher hasher = Hasher.create(hashAlgorithm);
 
+        long next;
         for (int part = 0; part < tableSize; part++) {
             for (long hashEntryAdr = tab.getFirst(part);
                  hashEntryAdr != 0L;
                  hashEntryAdr = next) {
 
+                // Linked List next kind of logic
                 next = NonMemoryPoolHashEntries.getNext(hashEntryAdr);
                 NonMemoryPoolHashEntries.setNext(hashEntryAdr, 0L);
+
+                // write to new Table
                 long hash = hasher.hash(hashEntryAdr, NonMemoryPoolHashEntries.ENTRY_OFF_DATA, NonMemoryPoolHashEntries.getKeyLen(hashEntryAdr));
                 newTable.addAsHead(hash, hashEntryAdr);
             }
@@ -469,12 +476,6 @@ class SegmentNonMemoryPool<V> extends Segment<V> {
             long next = NonMemoryPoolHashEntries.getNext(hashEntryAdr);
 
             removeLinkInternal(hash, hashEntryAdr, prevEntryAdr, next);
-        }
-
-        void replaceSentinelLink(long hash, long hashEntryAdr, long prevEntryAdr, long newHashEntryAdr) {
-            NonMemoryPoolHashEntries.setNext(newHashEntryAdr, NonMemoryPoolHashEntries.getNext(hashEntryAdr));
-
-            removeLinkInternal(hash, hashEntryAdr, prevEntryAdr, newHashEntryAdr);
         }
 
         private void removeLinkInternal(long hash, long hashEntryAdr, long prevEntryAdr, long next) {

@@ -28,6 +28,7 @@ final class KeyBuffer {
         return this;
     }
 
+
     public boolean equals(Object o) {
         if (this == o) {
             return true;

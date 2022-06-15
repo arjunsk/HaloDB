@@ -279,6 +279,7 @@ public class BenchmarkTool {
         }
     }
 
+
     public static byte[] longToBytes(long value) {
         return Longs.toByteArray(value);
     }

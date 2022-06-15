@@ -120,6 +120,7 @@ class IndexFile {
 
         private final ByteBuffer buffer;
 
+
         //TODO: index files are not that large, need to check the
         // performance since we are memory mapping it.
         public IndexFileIterator() throws IOException {

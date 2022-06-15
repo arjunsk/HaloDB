@@ -7,6 +7,7 @@
 
 package com.oath.halodb;
 
+
 enum HashAlgorithm {
     MURMUR3,
 

@@ -44,7 +44,7 @@ garbage collection implementation can keep write amplification low, and having a
 and we get transactional updates, snapshots, and quick crash recovery almost for free. Also in this scheme, there is no ordering of data and hence its 
 associated costs are not paid. We found that similar ideas have been used in [BitCask](https://github.com/basho/bitcask/blob/develop/doc/bitcask-intro.pdf) 
 and [Haystack](https://code.facebook.com/posts/685565858139515/needle-in-a-haystack-efficient-storage-of-billions-of-photos/). 
-But BitCask was written in Erlang, and since our database runs on the JVM running Erlang VM on the same box and talking to it from the JVM is something 
+But BitCask was written in Erlang, and since our database runs on the JVM, running Erlang VM on the same box and talking to it from the JVM is something 
 that we didn’t want to do. Haystack, on the other hand, is a full-fledged distributed database optimized for storing photos, and its storage engine hasn’t been open sourced.  
 Therefore it was decided to write a new storage engine from scratch; thus the HaloDB project was initiated. 
 

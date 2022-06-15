@@ -9,6 +9,7 @@ package com.oath.halodb;
 
 import com.sun.jna.Native;
 
+
 final class JNANativeAllocator implements NativeMemoryAllocator {
 
     public long allocate(long size) {

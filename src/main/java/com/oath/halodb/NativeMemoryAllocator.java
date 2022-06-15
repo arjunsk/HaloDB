@@ -7,6 +7,7 @@
 
 package com.oath.halodb;
 
+
 interface NativeMemoryAllocator {
 
     long allocate(long size);

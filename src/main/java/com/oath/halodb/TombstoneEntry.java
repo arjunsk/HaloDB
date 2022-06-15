@@ -103,6 +103,7 @@ class TombstoneEntry {
         return entry;
     }
 
+
     private long computeCheckSum(byte[] header) {
         CRC32 crc32 = new CRC32();
         crc32.update(header, CHECKSUM_OFFSET + CHECKSUM_SIZE, TOMBSTONE_ENTRY_HEADER_SIZE - CHECKSUM_SIZE);

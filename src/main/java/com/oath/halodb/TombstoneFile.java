@@ -123,6 +123,7 @@ class TombstoneFile {
                 logger.info("Found a corrupted entry in tombstone file {} after copying {} entries.", getName(), count);
                 break;
             }
+
             count++;
             repairFile.write(entry);
         }

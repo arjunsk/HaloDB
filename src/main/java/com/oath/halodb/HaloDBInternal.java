@@ -7,51 +7,41 @@ package com.oath.halodb;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.primitives.Ints;
-
 import com.google.common.util.concurrent.RateLimiter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.regex.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.regex.Matcher;
 
 class HaloDBInternal {
 
     private static final Logger logger = LoggerFactory.getLogger(HaloDBInternal.class);
-    static final String SNAPSHOT_SUBDIR = "snapshot";
 
+    static final String SNAPSHOT_SUBDIR = "snapshot";
     private DBDirectory dbDirectory;
 
     private volatile HaloDBFile currentWriteFile;
-
     private volatile TombstoneFile currentTombstoneFile;
 
     private volatile Thread tombstoneMergeThread;
 
-    private Map<Integer, HaloDBFile> readFileMap = new ConcurrentHashMap<>();
+    private final Map<Integer, HaloDBFile> readFileMap = new ConcurrentHashMap<>();
 
     HaloDBOptions options;
 
@@ -97,20 +87,24 @@ class HaloDBInternal {
             dbInternal.noOfTombstonesFoundDuringOpen = new AtomicLong(0);
 
             DBMetaData dbMetaData = new DBMetaData(dbInternal.dbDirectory);
+
+            // if file already exists, use it
             dbMetaData.loadFromFileIfExists();
             if (dbMetaData.getMaxFileSize() != 0 && dbMetaData.getMaxFileSize() != options.getMaxFileSize()) {
                 throw new IllegalArgumentException("File size cannot be changed after db was created. Current size " + dbMetaData.getMaxFileSize());
             }
-
             if (dbMetaData.isOpen() || dbMetaData.isIOError()) {
                 logger.info("DB was not shutdown correctly last time. Files may not be consistent, repairing them.");
                 // open flag is true, this might mean that the db was not cleanly closed the last time.
                 dbInternal.repairFiles();
             }
+
             dbMetaData.setOpen(true);
             dbMetaData.setIOError(false);
             dbMetaData.setVersion(Versions.CURRENT_META_FILE_VERSION);
             dbMetaData.setMaxFileSize(options.getMaxFileSize());
+
+            // store to a metadata file
             dbMetaData.storeToFile();
 
             dbInternal.compactionManager = new CompactionManager(dbInternal);
@@ -139,7 +133,7 @@ class HaloDBInternal {
             // merge tombstone files at background if clean up set to true
             if (options.isCleanUpTombstonesDuringOpen()) {
                 dbInternal.isTombstoneFilesMerging = true;
-                dbInternal.tombstoneMergeThread = new Thread(() -> { dbInternal.mergeTombstoneFiles(); });
+                dbInternal.tombstoneMergeThread = new Thread(dbInternal::mergeTombstoneFiles);
                 dbInternal.tombstoneMergeThread.start();
             }
 
@@ -220,17 +214,22 @@ class HaloDBInternal {
             throw new HaloDBException("key length cannot exceed " + Byte.MAX_VALUE);
         }
 
-        //TODO: more fine-grained locking is possible. 
+        //TODO: more fine-grained locking is possible.
         writeLock.lock();
         try {
+            // Record properties
             Record record = new Record(key, value);
             record.setSequenceNumber(getNextSequenceNumber());
             record.setVersion(Versions.CURRENT_DATA_FILE_VERSION);
+
+            // WAL
             InMemoryIndexMetaData entry = writeRecordToFile(record);
             markPreviousVersionAsStale(key);
 
             //TODO: implement getAndSet and use the return value for
             //TODO: markPreviousVersionAsStale method.
+
+            // Update Index
             return inMemoryIndex.put(key, entry);
         } finally {
             writeLock.unlock();
@@ -242,11 +241,12 @@ class HaloDBInternal {
             logger.error("Tried {} attempts but read failed", attemptNumber-1);
             throw new HaloDBException("Tried " + (attemptNumber-1) + " attempts but failed.");
         }
-        InMemoryIndexMetaData metaData = inMemoryIndex.get(key);
-        if (metaData == null) {
-            return null;
-        }
 
+        // Index contains the information, like which file(SST) contains the key.
+        InMemoryIndexMetaData metaData = inMemoryIndex.get(key);
+        if (metaData == null) return null;
+
+        // If the file is already opened in the cache, use it.
         HaloDBFile readFile = readFileMap.get(metaData.getFileId());
         if (readFile == null) {
             logger.debug("File {} not present. Compaction job would have deleted it. Retrying ...", metaData.getFileId());
@@ -255,44 +255,11 @@ class HaloDBInternal {
 
         try {
             return readFile.readFromFile(metaData.getValueOffset(), metaData.getValueSize());
-        }
-        catch (ClosedChannelException e) {
+        } catch (ClosedChannelException e) {
             if (!isClosing) {
                 logger.debug("File {} was closed. Compaction job would have deleted it. Retrying ...", metaData.getFileId());
                 return get(key, attemptNumber+1);
             }
-
-            // trying to read after HaloDB.close() method called. 
-            throw e;
-        }
-    }
-
-    int get(byte[] key, ByteBuffer buffer) throws IOException {
-        InMemoryIndexMetaData metaData = inMemoryIndex.get(key);
-        if (metaData == null) {
-            return 0;
-        }
-
-        HaloDBFile readFile = readFileMap.get(metaData.getFileId());
-        if (readFile == null) {
-            logger.debug("File {} not present. Compaction job would have deleted it. Retrying ...", metaData.getFileId());
-            return get(key, buffer);
-        }
-
-        buffer.clear();
-        buffer.limit(metaData.getValueSize());
-
-        try {
-            int read = readFile.readFromFile(metaData.getValueOffset(), buffer);
-            buffer.flip();
-            return read;
-        }
-        catch (ClosedChannelException e) {
-            if (!isClosing) {
-                logger.debug("File {} was closed. Compaction job would have deleted it. Retrying ...", metaData.getFileId());
-                return get(key, buffer);
-            }
-
             // trying to read after HaloDB.close() method called.
             throw e;
         }
@@ -302,6 +269,8 @@ class HaloDBInternal {
     synchronized boolean takeSnapshot() {
         logger.info("Start generating the snapshot");
 
+        // Wait for tombstoneFile merging to complete. We are taking
+       // Snapshot, ie Full DB backup
         if (isTombstoneFilesMerging) {
             logger.info("DB is merging the tombstone files now. Wait it finished");
             try {
@@ -395,10 +364,12 @@ class HaloDBInternal {
             if (metaData != null) {
                 //TODO: implement a getAndRemove method in InMemoryIndex.
                 inMemoryIndex.remove(key);
+
                 TombstoneEntry entry =
                     new TombstoneEntry(key, getNextSequenceNumber(), -1, Versions.CURRENT_TOMBSTONE_FILE_VERSION);
                 currentTombstoneFile = rollOverTombstoneFile(entry, currentTombstoneFile);
                 currentTombstoneFile.write(entry);
+
                 markPreviousVersionAsStale(key, metaData);
             }
         } finally {
@@ -425,15 +396,14 @@ class HaloDBInternal {
         compactionManager.resumeCompaction();
     }
 
-    private InMemoryIndexMetaData writeRecordToFile(Record record) throws IOException, HaloDBException {
+    private InMemoryIndexMetaData writeRecordToFile(Record record) throws IOException {
         rollOverCurrentWriteFile(record);
         return currentWriteFile.writeRecord(record);
     }
 
     private void rollOverCurrentWriteFile(Record record) throws IOException {
         int size = record.getKey().length + record.getValue().length + Record.Header.HEADER_SIZE;
-        if ((currentWriteFile == null || currentWriteFile.getWriteOffset() + size > options.getMaxFileSize())
-            && !isClosing) {
+        if ((currentWriteFile == null || currentWriteFile.getWriteOffset() + size > options.getMaxFileSize())  && !isClosing) {
             forceRollOverCurrentWriteFile();
         }
     }
@@ -449,8 +419,7 @@ class HaloDBInternal {
 
     private TombstoneFile rollOverTombstoneFile(TombstoneEntry entry, TombstoneFile tombstoneFile) throws IOException {
         int size = entry.getKey().length + TombstoneEntry.TOMBSTONE_ENTRY_HEADER_SIZE;
-        if ((tombstoneFile == null ||
-             tombstoneFile.getWriteOffset() + size > options.getMaxTombstoneFileSize()) && !isClosing) {
+        if ( (tombstoneFile == null || tombstoneFile.getWriteOffset() + size > options.getMaxTombstoneFileSize()) && !isClosing) {
             tombstoneFile = forceRollOverTombstoneFile(tombstoneFile);
         }
 
@@ -489,7 +458,7 @@ class HaloDBInternal {
         int staleSizeInFile = updateStaleDataMap(fileId, staleRecordSize);
         if (staleSizeInFile >= file.getSize() * options.getCompactionThresholdPerFile()) {
 
-            // We don't want to compact the files the writer thread and the compaction thread is currently writing to.
+            // We don't want to compact the files if the writer thread and the compaction thread is currently writing to.
             if (getCurrentWriteFileId() != fileId && compactionManager.getCurrentWriteFileId() != fileId) {
                 if(compactionManager.submitFileForCompaction(fileId)) {
                     staleDataPerFileMap.remove(fileId);
@@ -502,10 +471,12 @@ class HaloDBInternal {
         return staleDataPerFileMap.merge(fileId, staleDataSize, (oldValue, newValue) -> oldValue + newValue);
     }
 
+    // Below function is called by CompactionManager
     void markFileAsCompacted(int fileId) {
         staleDataPerFileMap.remove(fileId);
     }
 
+    // Below function is called by CompactionManager
     InMemoryIndex getInMemoryIndex() {
         return inMemoryIndex;
     }
@@ -518,17 +489,7 @@ class HaloDBInternal {
         return file;
     }
 
-    private List<HaloDBFile> openDataFilesForReading() throws IOException {
-        File[] files = dbDirectory.listDataFiles();
 
-        List<HaloDBFile> result = new ArrayList<>();
-        for (File f : files) {
-            HaloDBFile.FileType fileType = HaloDBFile.findFileType(f);
-            result.add(HaloDBFile.openForReading(dbDirectory, f, fileType, options));
-        }
-
-        return result;
-    }
 
     /**
      * Opens data files for reading and creates a map with file id as the key.
@@ -553,16 +514,24 @@ class HaloDBInternal {
         return maxFileId;
     }
 
+    private List<HaloDBFile> openDataFilesForReading() throws IOException {
+        File[] files = dbDirectory.listDataFiles();
+
+        List<HaloDBFile> result = new ArrayList<>();
+        for (File f : files) {
+            // ".datac" or ".data" file extentions
+            HaloDBFile.FileType fileType = HaloDBFile.findFileType(f);
+
+            result.add(HaloDBFile.openForReading(dbDirectory, f, fileType, options));
+        }
+
+        return result;
+    }
+
     private int getNextFileId() {
         return nextFileId.incrementAndGet();
     }
 
-    private Optional<HaloDBFile> getLatestDataFile(HaloDBFile.FileType fileType) {
-        return readFileMap.values()
-            .stream()
-            .filter(f -> f.getFileType() == fileType)
-            .max(Comparator.comparingInt(HaloDBFile::getFileId));
-    }
 
     private long buildInMemoryIndex() throws IOException {
 
@@ -648,10 +617,12 @@ class HaloDBInternal {
             int count = 0, inserted = 0;
             while (iterator.hasNext()) {
                 IndexFileEntry indexFileEntry = iterator.next();
+
                 byte[] key = indexFileEntry.getKey();
                 int recordOffset = indexFileEntry.getRecordOffset();
                 int recordSize = indexFileEntry.getRecordSize();
                 long sequenceNumber = indexFileEntry.getSequenceNumber();
+
                 maxSequenceNumber = Long.max(sequenceNumber, maxSequenceNumber);
                 int valueOffset = Utils.getValueOffset(recordOffset, key);
                 int valueSize = recordSize - (Record.Header.HEADER_SIZE + key.length);
@@ -660,8 +631,10 @@ class HaloDBInternal {
                 InMemoryIndexMetaData metaData = new InMemoryIndexMetaData(fileId, valueOffset, valueSize, sequenceNumber);
 
                 if (!inMemoryIndex.putIfAbsent(key, metaData)) {
+                    // If key already present
                     while (true) {
                         InMemoryIndexMetaData existing = inMemoryIndex.get(key);
+                        //TODO: Understand sequence Number
                         if (existing.getSequenceNumber() >= sequenceNumber) {
                             // stale data, update stale data map.
                             addFileToCompactionQueueIfThresholdCrossed(fileId, recordSize);
@@ -704,8 +677,10 @@ class HaloDBInternal {
             long count = 0, active = 0, copied = 0;
             while (iterator.hasNext()) {
                 TombstoneEntry entry = iterator.next();
+
                 byte[] key = entry.getKey();
                 long sequenceNumber = entry.getSequenceNumber();
+
                 maxSequenceNumber = Long.max(sequenceNumber, maxSequenceNumber);
                 count++;
 
@@ -715,8 +690,7 @@ class HaloDBInternal {
                     inMemoryIndex.remove(key);
 
                     // update stale data map for the previous version.
-                    addFileToCompactionQueueIfThresholdCrossed(
-                        existing.getFileId(), Utils.getRecordSize(key.length, existing.getValueSize()));
+                    addFileToCompactionQueueIfThresholdCrossed(existing.getFileId(), Utils.getRecordSize(key.length, existing.getValueSize()));
                     active++;
 
                     if (options.isCleanUpTombstonesDuringOpen()) {
@@ -726,8 +700,7 @@ class HaloDBInternal {
                     }
                 }
             }
-            logger.debug("Completed scanning tombstone file {}. Found {} tombstones, {} are still active",
-                tombstoneFile.getName(), count, active);
+            logger.debug("Completed scanning tombstone file {}. Found {} tombstones, {} are still active", tombstoneFile.getName(), count, active);
             tombstoneFile.close();
 
             if (options.isCleanUpTombstonesDuringOpen()) {
@@ -818,12 +791,18 @@ class HaloDBInternal {
                 logger.error("IO exception when closing tombstone file: {}", mergedTombstoneFile.getName(), e);
             }
         }
-        logger.info("Tombstone files count, before merge:{}, after merge:{}",
-            tombStoneFiles.length, dbDirectory.listTombstoneFiles().length);
+        logger.info("Tombstone files count, before merge:{}, after merge:{}", tombStoneFiles.length, dbDirectory.listTombstoneFiles().length);
         isTombstoneFilesMerging = false;
     }
 
+    private Optional<HaloDBFile> getLatestDataFile(HaloDBFile.FileType fileType) {
+        return readFileMap.values()
+                .stream()
+                .filter(f -> f.getFileType() == fileType)
+                .max(Comparator.comparingInt(HaloDBFile::getFileId));
+    }
     private void repairFiles() {
+
         getLatestDataFile(HaloDBFile.FileType.DATA_FILE).ifPresent(file -> {
             try {
                 logger.info("Repairing file {}.data", file.getFileId());
@@ -834,6 +813,7 @@ class HaloDBInternal {
                 throw new RuntimeException("Exception while repairing data file " + file.getFileId() + " which might be corrupted", e);
             }
         });
+
         getLatestDataFile(HaloDBFile.FileType.COMPACTED_FILE).ifPresent(file -> {
             try {
                 logger.info("Repairing file {}.datac", file.getFileId());
@@ -861,7 +841,8 @@ class HaloDBInternal {
 
     private FileLock getLock() throws HaloDBException {
         try {
-            FileLock lock = FileChannel.open(dbDirectory.getPath().resolve("LOCK"), StandardOpenOption.CREATE, StandardOpenOption.WRITE).tryLock();
+            FileLock lock = FileChannel.open(dbDirectory.getPath().resolve("LOCK"), StandardOpenOption.CREATE, StandardOpenOption.WRITE)
+                                       .tryLock();
             if (lock == null) {
                 logger.error("Error while opening db. Another process already holds a lock to this db.");
                 throw new HaloDBException("Another process already holds a lock for this db.");

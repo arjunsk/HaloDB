@@ -22,6 +22,7 @@ final class LongArrayList {
         array = new long[initialCapacity];
     }
 
+
     public long getLong(int i) {
         if (i < 0 || i >= size) {
             throw new ArrayIndexOutOfBoundsException();

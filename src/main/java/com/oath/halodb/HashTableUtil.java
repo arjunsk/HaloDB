@@ -7,6 +7,7 @@
 
 package com.oath.halodb;
 
+
 final class HashTableUtil {
 
 // Hash bucket-table

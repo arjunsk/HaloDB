@@ -14,6 +14,7 @@ class MemoryPoolAddress {
     final byte chunkIndex;
     final int chunkOffset;
 
+
     MemoryPoolAddress(byte chunkIndex, int chunkOffset) {
         this.chunkIndex = chunkIndex;
         this.chunkOffset = chunkOffset;

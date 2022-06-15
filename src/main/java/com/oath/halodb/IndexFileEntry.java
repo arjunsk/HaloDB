@@ -55,6 +55,7 @@ class IndexFileEntry {
         byte[] header = new byte[INDEX_FILE_HEADER_SIZE];
         ByteBuffer h = ByteBuffer.wrap(header);
 
+
         h.put(VERSION_OFFSET, (byte)version);
         h.put(KEY_SIZE_OFFSET, keySize);
         h.putInt(RECORD_SIZE_OFFSET, recordSize);

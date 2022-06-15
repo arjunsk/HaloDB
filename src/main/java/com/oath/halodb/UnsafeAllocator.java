@@ -25,6 +25,7 @@ final class UnsafeAllocator implements NativeMemoryAllocator {
         }
     }
 
+
     public long allocate(long size) {
         try {
             return unsafe.allocateMemory(size);

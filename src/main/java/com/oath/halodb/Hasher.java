@@ -44,6 +44,7 @@ abstract class Hasher {
 
     abstract long hash(long address, long offset, int length);
 
+
     static final class Crc32Hash extends Hasher {
 
         long hash(byte[] array) {

@@ -71,6 +71,7 @@ public class HaloDBStorageEngine implements StorageEngine {
         }
     }
 
+
     @Override
     public void close() {
         if (db != null){

@@ -7,6 +7,7 @@
 
 package com.oath.halodb;
 
+
 class OffHeapHashTableBuilder<V> {
 
     private int segmentCount;

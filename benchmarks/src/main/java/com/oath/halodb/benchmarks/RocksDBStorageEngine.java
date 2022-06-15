@@ -78,18 +78,6 @@ public class RocksDBStorageEngine implements StorageEngine {
         options.setAllowMmapReads(false);
         options.setCompressionType(CompressionType.SNAPPY_COMPRESSION);
 
-
-        System.out.printf("maxBackgroundCompactions %d \n", options.maxBackgroundCompactions());
-        System.out.printf("minWriteBufferNumberToMerge %d \n", options.minWriteBufferNumberToMerge());
-        System.out.printf("maxWriteBufferNumberToMaintain %d \n", options.maxWriteBufferNumberToMaintain());
-
-
-        System.out.printf("level0FileNumCompactionTrigger %d \n", options.level0FileNumCompactionTrigger());
-        System.out.printf("maxBytesForLevelBase %d \n", options.maxBytesForLevelBase());
-        System.out.printf("maxBytesForLevelMultiplier %f \n", options.maxBytesForLevelMultiplier());
-        System.out.printf("targetFileSizeBase %d \n", options.targetFileSizeBase());
-        System.out.printf("targetFileSizeMultiplier %d \n", options.targetFileSizeMultiplier());
-
         List<CompressionType> compressionLevels =
             Arrays.asList(
                 CompressionType.NO_COMPRESSION,
@@ -101,9 +89,6 @@ public class RocksDBStorageEngine implements StorageEngine {
             );
 
         options.setCompressionPerLevel(compressionLevels);
-
-        System.out.printf("compressionPerLevel %s \n", options.compressionPerLevel());
-        System.out.printf("numLevels %s \n", options.numLevels());
 
         writeOptions = new WriteOptions();
         writeOptions.setDisableWAL(true);

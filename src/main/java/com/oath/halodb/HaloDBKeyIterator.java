@@ -70,6 +70,7 @@ public class HaloDBKeyIterator implements  Iterator<RecordKey>{
                 } catch (ClosedChannelException e) {
                     if (dbInternal.isClosing()) {
                         //TODO: define custom Exception classes for HaloDB.
+
                         throw new RuntimeException("DB is closing");
                     }
                     logger.debug("Index file {} closed, probably by compaction thread. Skipping to next one", fileId);

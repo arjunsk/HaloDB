@@ -14,6 +14,7 @@ public interface StorageEngine {
 
     default void delete(byte[] key) {};
 
+
     void open();
 
     void close();

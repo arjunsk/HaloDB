@@ -29,6 +29,7 @@ class MemoryPoolChunk {
         this.fixedSlotSize = HEADER_SIZE + fixedKeyLength + fixedValueLength;
     }
 
+
     static MemoryPoolChunk create(int chunkSize, int fixedKeyLength, int fixedValueLength) {
         int fixedSlotSize = HEADER_SIZE + fixedKeyLength + fixedValueLength;
         if (fixedSlotSize > chunkSize) {

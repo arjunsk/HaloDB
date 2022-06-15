@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 
+
 /**
  * Represents the top level directory for a HaloDB instance. 
  */

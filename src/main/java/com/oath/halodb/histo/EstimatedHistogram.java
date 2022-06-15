@@ -28,7 +28,8 @@ public class EstimatedHistogram {
      */
     private final long[] bucketOffsets;
 
-    // buckets is one element longer than bucketOffsets -- the last element is values greater than the last offset
+    // buckets is one element longer than bucketOffsets
+    // -- the last element is values greater than the last offset
     final AtomicLongArray buckets;
 
     public EstimatedHistogram() {

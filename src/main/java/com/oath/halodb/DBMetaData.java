@@ -124,6 +124,7 @@ class DBMetaData {
         return sequenceNumber;
     }
 
+
     void setSequenceNumber(long sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
     }

@@ -21,16 +21,10 @@ class CompactionManager {
     private static final Logger logger = LoggerFactory.getLogger(CompactionManager.class);
 
     private  final HaloDBInternal dbInternal;
-
-    private volatile boolean isRunning = false;
-
-    private final RateLimiter compactionRateLimiter;
-
     private volatile HaloDBFile currentWriteFile = null;
     private int currentWriteFileOffset = 0;
 
     private final BlockingQueue<Integer> compactionQueue;
-
     private volatile CompactionThread compactionThread;
 
     private volatile long numberOfRecordsCopied = 0;
@@ -42,7 +36,8 @@ class CompactionManager {
     private volatile long compactionStartTime = System.currentTimeMillis();
 
     private static final int STOP_SIGNAL = -10101;
-
+    private volatile boolean isRunning = false;
+    private final RateLimiter compactionRateLimiter;
     private final ReentrantLock startStopLock = new ReentrantLock();
     private volatile boolean stopInProgress = false;
 
@@ -182,8 +177,7 @@ class CompactionManager {
                     } finally {
                         startStopLock.unlock();
                     }
-                }
-                else {
+                } else {
                     logger.info("Not restarting thread as the lock is held by stop compaction method.");
                 }
 

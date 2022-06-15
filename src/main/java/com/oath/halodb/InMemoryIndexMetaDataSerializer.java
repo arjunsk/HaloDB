@@ -7,6 +7,7 @@ package com.oath.halodb;
 
 import java.nio.ByteBuffer;
 
+
 class InMemoryIndexMetaDataSerializer implements HashTableValueSerializer<InMemoryIndexMetaData> {
 
     public void serialize(InMemoryIndexMetaData recordMetaData, ByteBuffer byteBuffer) {

@@ -12,6 +12,7 @@ public class RandomDataGenerator {
     private static final int size = 1003087;
     private int position = 0;
 
+
     public RandomDataGenerator(int seed) {
         this.data = new byte[size];
         Random random = new Random(seed);

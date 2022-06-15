@@ -112,6 +112,7 @@ public class HaloDBIterator implements Iterator<Record> {
         return false;
     }
 
+
     private Record readRecordFromDataFile(IndexFileEntry entry) throws IOException {
         InMemoryIndexMetaData meta = Utils.getMetaData(entry, currentFile.getFileId());
         Record record = null;

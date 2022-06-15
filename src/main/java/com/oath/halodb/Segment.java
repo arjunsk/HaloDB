@@ -11,6 +11,7 @@ import com.oath.halodb.histo.EstimatedHistogram;
 
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 
+
 abstract class Segment<V> {
 
     final HashTableValueSerializer<V> valueSerializer;
@@ -40,9 +41,11 @@ abstract class Segment<V> {
         long t = Thread.currentThread().getId();
 
         if (t == lockFieldUpdater.get(this)) {
+            // If already locked by current thread, return false.
             return false;
         }
         while (true) {
+            // if teh lockFieldUpdater has 0, ie it is free. Set the value as t.
             if (lockFieldUpdater.compareAndSet(this, 0L, t)) {
                 return true;
             }

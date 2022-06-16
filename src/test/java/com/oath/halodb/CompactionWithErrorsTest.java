@@ -7,18 +7,17 @@ package com.oath.halodb;
 
 import com.google.common.util.concurrent.RateLimiter;
 
+import com.oath.halodb.domain.Record;
+import com.oath.halodb.pojo.DBMetaData;
+import com.oath.halodb.pojo.HaloDBException;
+import com.oath.halodb.pojo.HaloDBOptions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import sun.nio.ch.FileChannelImpl;
-
 import java.io.IOException;
-import java.nio.channels.WritableByteChannel;
-import java.nio.file.Paths;
 import java.util.List;
 
 import mockit.Expectations;
-import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
 import mockit.Mocked;

@@ -6,6 +6,11 @@
 package com.oath.halodb;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.oath.halodb.domain.HaloDBIterator;
+import com.oath.halodb.domain.HaloDBKeyIterator;
+import com.oath.halodb.pojo.HaloDBException;
+import com.oath.halodb.pojo.HaloDBOptions;
+import com.oath.halodb.pojo.HaloDBStats;
 
 import java.io.File;
 import java.io.IOException;

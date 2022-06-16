@@ -7,7 +7,7 @@
 
 package com.oath.halodb;
 
-import com.oath.halodb.HashTableUtil;
+import com.oath.halodb.ohc.HashTableUtil;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;

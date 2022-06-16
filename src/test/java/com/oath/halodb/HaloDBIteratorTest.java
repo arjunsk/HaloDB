@@ -5,6 +5,12 @@
 
 package com.oath.halodb;
 
+import com.oath.halodb.domain.HaloDBFile;
+import com.oath.halodb.domain.HaloDBIterator;
+import com.oath.halodb.domain.Record;
+import com.oath.halodb.pojo.HaloDBException;
+import com.oath.halodb.pojo.HaloDBFile;
+import com.oath.halodb.pojo.HaloDBOptions;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.testng.Assert;

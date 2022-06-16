@@ -7,7 +7,7 @@
 
 package com.oath.halodb;
 
-import com.oath.halodb.LongArrayList;
+import com.oath.halodb.ohc.LongArrayList;
 
 import org.testng.annotations.Test;
 

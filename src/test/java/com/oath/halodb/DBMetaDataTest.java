@@ -5,6 +5,9 @@
 
 package com.oath.halodb;
 
+import com.oath.halodb.pojo.DBDirectory;
+import com.oath.halodb.pojo.DBMetaData;
+import com.oath.halodb.pojo.Versions;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;

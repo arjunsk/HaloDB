@@ -7,6 +7,10 @@ package com.oath.halodb;
 
 import com.google.common.primitives.Longs;
 
+import com.oath.halodb.domain.MemoryPoolChunk;
+import com.oath.halodb.pojo.MemoryPoolAddress;
+import com.oath.halodb.pojo.MemoryPoolChunk;
+import com.oath.halodb.pojo.MemoryPoolHashEntries;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;

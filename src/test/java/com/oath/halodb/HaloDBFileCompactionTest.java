@@ -7,6 +7,10 @@ package com.oath.halodb;
 
 import com.google.common.primitives.Longs;
 
+import com.oath.halodb.domain.HaloDBFile;
+import com.oath.halodb.domain.Record;
+import com.oath.halodb.pojo.HaloDBFile;
+import com.oath.halodb.pojo.HaloDBOptions;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.testng.annotations.Test;

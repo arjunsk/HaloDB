@@ -6,8 +6,8 @@ package com.oath.halodb.benchmarks;
 
 import com.google.common.primitives.Ints;
 import com.oath.halodb.HaloDB;
-import com.oath.halodb.HaloDBException;
-import com.oath.halodb.HaloDBOptions;
+import com.oath.halodb.pojo.HaloDBException;
+import com.oath.halodb.pojo.HaloDBOptions;
 
 import java.io.File;
 

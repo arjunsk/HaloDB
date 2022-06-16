@@ -5,6 +5,9 @@
 
 package com.oath.halodb;
 
+import com.oath.halodb.domain.Record;
+import com.oath.halodb.pojo.HaloDBException;
+import com.oath.halodb.pojo.HaloDBOptions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

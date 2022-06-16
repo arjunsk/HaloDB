@@ -9,6 +9,9 @@ package com.oath.halodb;
 
 import com.google.common.primitives.Longs;
 
+import com.oath.halodb.ohc.OffHeapHashTable;
+import com.oath.halodb.ohc.OffHeapHashTableBuilder;
+import com.oath.halodb.ohc.Uns;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 

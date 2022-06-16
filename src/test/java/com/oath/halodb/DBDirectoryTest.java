@@ -5,6 +5,13 @@
 
 package com.oath.halodb;
 
+import com.oath.halodb.domain.HaloDBFile;
+import com.oath.halodb.domain.IndexFile;
+import com.oath.halodb.domain.TombstoneFile;
+import com.oath.halodb.pojo.DBDirectory;
+import com.oath.halodb.pojo.HaloDBFile;
+import com.oath.halodb.pojo.IndexFile;
+import com.oath.halodb.pojo.TombstoneFile;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.testng.Assert;

@@ -6,6 +6,10 @@
 package com.oath.halodb;
 
 
+import com.oath.halodb.domain.Record;
+import com.oath.halodb.pojo.InMemoryIndexMetaData;
+import com.oath.halodb.pojo.IndexFileEntry;
+
 class Utils {
     static long roundUpToPowerOf2(long number) {
         return (number > 1) ? Long.highestOneBit((number - 1) << 1) : 1;

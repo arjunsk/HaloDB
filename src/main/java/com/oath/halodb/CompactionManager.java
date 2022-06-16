@@ -8,6 +8,12 @@ package com.oath.halodb;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.util.concurrent.RateLimiter;
 
+import com.oath.halodb.domain.HaloDBFile;
+import com.oath.halodb.domain.IndexFile;
+import com.oath.halodb.pojo.HaloDBFile;
+import com.oath.halodb.pojo.InMemoryIndexMetaData;
+import com.oath.halodb.pojo.IndexFile;
+import com.oath.halodb.pojo.IndexFileEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

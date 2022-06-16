@@ -5,6 +5,9 @@
 
 package com.oath.halodb;
 
+import com.oath.halodb.pojo.DBDirectory;
+import com.oath.halodb.pojo.HaloDBException;
+import com.oath.halodb.pojo.HaloDBOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 

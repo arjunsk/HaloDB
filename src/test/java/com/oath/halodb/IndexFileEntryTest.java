@@ -5,13 +5,14 @@
 
 package com.oath.halodb;
 
+import com.oath.halodb.pojo.IndexFileEntry;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.nio.ByteBuffer;
 import java.util.zip.CRC32;
 
-import static com.oath.halodb.IndexFileEntry.*;
+import static com.oath.halodb.pojo.IndexFileEntry.*;
 
 public class IndexFileEntryTest {
 

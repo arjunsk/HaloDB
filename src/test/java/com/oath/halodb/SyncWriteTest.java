@@ -1,5 +1,9 @@
 package com.oath.halodb;
 
+import com.oath.halodb.domain.HaloDBFile;
+import com.oath.halodb.domain.Record;
+import com.oath.halodb.domain.TombstoneFile;
+import com.oath.halodb.pojo.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

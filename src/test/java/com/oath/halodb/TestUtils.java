@@ -5,6 +5,10 @@
 
 package com.oath.halodb;
 
+import com.oath.halodb.domain.HaloDBFile;
+import com.oath.halodb.domain.Record;
+import com.oath.halodb.pojo.HaloDBException;
+import com.oath.halodb.pojo.HaloDBFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

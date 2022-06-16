@@ -10,6 +10,8 @@ package com.oath.halodb;
 import com.google.common.base.Charsets;
 import com.google.common.primitives.Longs;
 
+import com.oath.halodb.ohc.HashTableValueSerializer;
+import com.oath.halodb.ohc.OffHeapHashTable;
 import org.testng.Assert;
 
 import java.nio.ByteBuffer;

@@ -5,6 +5,9 @@
 
 package com.oath.halodb;
 
+import com.oath.halodb.pojo.InMemoryIndexMetaData;
+import com.oath.halodb.ohc.HashTableValueSerializer;
+
 import java.nio.ByteBuffer;
 
 

@@ -7,6 +7,8 @@ package com.oath.halodb;
 
 import com.google.common.primitives.Longs;
 
+import com.oath.halodb.pojo.HaloDBException;
+import com.oath.halodb.pojo.HaloDBOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;

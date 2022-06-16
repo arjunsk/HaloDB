@@ -7,6 +7,13 @@ package com.oath.halodb;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import com.oath.halodb.domain.HaloDBFile;
+import com.oath.halodb.domain.IndexFile;
+import com.oath.halodb.domain.TombstoneFile;
+import com.oath.halodb.pojo.HaloDBFile;
+import com.oath.halodb.pojo.IndexFile;
+import com.oath.halodb.pojo.TombstoneFile;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.testng.Assert;

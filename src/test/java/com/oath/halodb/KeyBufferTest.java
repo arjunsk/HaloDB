@@ -11,6 +11,10 @@ import com.google.common.hash.HashCode;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
 
+import com.oath.halodb.ohc.HashAlgorithm;
+import com.oath.halodb.ohc.KeyBuffer;
+import com.oath.halodb.ohc.NonMemoryPoolHashEntries;
+import com.oath.halodb.ohc.Uns;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -50,7 +54,7 @@ public class KeyBufferTest
         buf.put((byte) (0xf0 & 0xff));
 
         KeyBuffer out = new KeyBuffer(buf.array());
-        out.finish(com.oath.halodb.Hasher.create(hashAlgorithm));
+        out.finish(com.oath.halodb.ohc.Hasher.create(hashAlgorithm));
 
         Hasher hasher = hasher(hashAlgorithm);
         hasher.putByte((byte) 42);
@@ -96,7 +100,7 @@ public class KeyBufferTest
         buf.put(ref);
         buf.put((byte) (0xf0 & 0xff));
         KeyBuffer out = new KeyBuffer(buf.array());
-        out.finish(com.oath.halodb.Hasher.create(hashAlgorithm));
+        out.finish(com.oath.halodb.ohc.Hasher.create(hashAlgorithm));
 
         Hasher hasher = hasher(hashAlgorithm);
         hasher.putByte((byte) 42);
@@ -119,7 +123,7 @@ public class KeyBufferTest
                 ByteBuffer buf = ByteBuffer.allocate(i);
                 buf.put(ref);
                 KeyBuffer out = new KeyBuffer(buf.array());
-                out.finish(com.oath.halodb.Hasher.create(hashAlgorithm));
+                out.finish(com.oath.halodb.ohc.Hasher.create(hashAlgorithm));
 
                 Hasher hasher = hasher(hashAlgorithm);
                 hasher.putBytes(ref);
@@ -156,7 +160,7 @@ public class KeyBufferTest
         long adr = Uns.allocate(NonMemoryPoolHashEntries.ENTRY_OFF_DATA + randomKey.length, true);
         try {
             KeyBuffer key = new KeyBuffer(randomKey);
-            key.finish(com.oath.halodb.Hasher.create(HashAlgorithm.MURMUR3));
+            key.finish(com.oath.halodb.ohc.Hasher.create(HashAlgorithm.MURMUR3));
 
             NonMemoryPoolHashEntries.init(randomKey.length, adr);
             Uns.setMemory(adr, NonMemoryPoolHashEntries.ENTRY_OFF_DATA, randomKey.length, (byte) 0);

@@ -7,6 +7,9 @@
 
 package com.oath.halodb;
 
+import com.oath.halodb.ohc.HashAlgorithm;
+import com.oath.halodb.ohc.Hasher;
+import com.oath.halodb.ohc.Uns;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

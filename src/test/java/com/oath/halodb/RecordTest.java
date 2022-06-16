@@ -5,6 +5,7 @@
 
 package com.oath.halodb;
 
+import com.oath.halodb.domain.Record;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

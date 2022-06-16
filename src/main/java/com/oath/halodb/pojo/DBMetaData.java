@@ -21,7 +21,7 @@ import static java.nio.file.StandardCopyOption.*;
  * Represents the Metadata for the DB, stored in METADATA_FILE_NAME,
  * and contains methods to operate on it.
  */
-class DBMetaData {
+public class DBMetaData {
 
     /**
      * checksum         - 4 bytes

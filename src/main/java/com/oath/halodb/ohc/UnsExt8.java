@@ -11,7 +11,7 @@ import sun.misc.Unsafe;
 
 import java.util.zip.CRC32;
 
-final class UnsExt8 extends UnsExt {
+public final class UnsExt8 extends UnsExt {
 
 
     UnsExt8(Unsafe unsafe) {

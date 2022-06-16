@@ -8,7 +8,7 @@ package com.oath.halodb.pojo;
 import java.nio.ByteBuffer;
 
 /** Metadata stored in the in-memory index for each key. */
-class InMemoryIndexMetaData {
+public class InMemoryIndexMetaData {
 
   private final int fileId;
   private final int valueOffset;

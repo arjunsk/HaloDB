@@ -23,7 +23,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.ReentrantLock;
 
-class CompactionManager {
+public class CompactionManager {
     private static final Logger logger = LoggerFactory.getLogger(CompactionManager.class);
 
     private  final HaloDBInternal dbInternal;

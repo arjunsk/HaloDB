@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Represents the top level directory for a HaloDB instance. 
  */
-class DBDirectory {
+public class DBDirectory {
 
     private final File dbDirectory;
     private final FileChannel directoryChannel;

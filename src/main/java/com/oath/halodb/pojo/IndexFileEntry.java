@@ -13,7 +13,7 @@ import java.util.zip.CRC32;
 /**
  * This is what is stored in the index file.
  */
-class IndexFileEntry {
+public class IndexFileEntry {
 
     /**
      * checksum         - 4 bytes. 

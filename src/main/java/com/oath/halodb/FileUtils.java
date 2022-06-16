@@ -19,7 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-class FileUtils {
+public class FileUtils {
 
     static void createDirectoryIfNotExists(File directory) throws IOException {
         if (directory.exists()) {

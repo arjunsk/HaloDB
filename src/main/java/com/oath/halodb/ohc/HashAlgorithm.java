@@ -8,7 +8,7 @@
 package com.oath.halodb.ohc;
 
 
-enum HashAlgorithm {
+public enum HashAlgorithm {
     MURMUR3,
 
     CRC32,

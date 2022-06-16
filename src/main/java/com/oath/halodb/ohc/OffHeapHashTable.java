@@ -13,7 +13,7 @@ import com.oath.halodb.histo.EstimatedHistogram;
 import java.io.Closeable;
 
 
-interface OffHeapHashTable<V> extends Closeable {
+public interface OffHeapHashTable<V> extends Closeable {
 
     /**
      * @param key      key of the entry to be added. Must not be {@code null}.

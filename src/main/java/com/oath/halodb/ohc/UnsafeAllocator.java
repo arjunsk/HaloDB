@@ -12,7 +12,7 @@ import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 
-final class UnsafeAllocator implements NativeMemoryAllocator {
+public final class UnsafeAllocator implements NativeMemoryAllocator {
 
     static final Unsafe unsafe;
 

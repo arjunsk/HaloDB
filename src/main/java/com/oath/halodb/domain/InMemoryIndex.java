@@ -18,7 +18,7 @@ import java.io.IOException;
 /**
  * Hash table stored in native memory, outside Java heap.
  */
-class InMemoryIndex {
+public class InMemoryIndex {
     private static final Logger logger = LoggerFactory.getLogger(InMemoryIndex.class);
 
     // This class is a wrapper for offHeapHashTable.

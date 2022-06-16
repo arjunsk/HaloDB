@@ -20,7 +20,7 @@ import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.Objects;
 
-class IndexFile {
+public class IndexFile {
     private static final Logger logger = LoggerFactory.getLogger(IndexFile.class);
 
     private final int fileId;

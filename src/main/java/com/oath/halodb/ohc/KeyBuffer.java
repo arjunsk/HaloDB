@@ -11,7 +11,7 @@ import com.oath.halodb.NonMemoryPoolHashEntries;
 
 import java.util.Arrays;
 
-final class KeyBuffer {
+public final class KeyBuffer {
 
     final byte[] buffer;
     private long hash;

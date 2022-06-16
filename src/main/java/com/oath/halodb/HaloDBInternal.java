@@ -32,7 +32,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Matcher;
 
-class HaloDBInternal {
+public class HaloDBInternal {
 
     private static final Logger logger = LoggerFactory.getLogger(HaloDBInternal.class);
 

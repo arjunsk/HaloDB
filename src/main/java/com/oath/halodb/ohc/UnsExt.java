@@ -10,7 +10,7 @@ package com.oath.halodb.ohc;
 
 import sun.misc.Unsafe;
 
-abstract class UnsExt {
+public abstract class UnsExt {
 
     final Unsafe unsafe;
 

@@ -10,7 +10,7 @@ package com.oath.halodb.ohc;
 
 import com.oath.halodb.HashTableValueSerializer;
 
-class OffHeapHashTableBuilder<V> {
+public class OffHeapHashTableBuilder<V> {
 
     private int segmentCount;
     private int hashTableSize = 8192;

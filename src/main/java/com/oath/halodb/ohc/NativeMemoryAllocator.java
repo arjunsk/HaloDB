@@ -8,7 +8,7 @@
 package com.oath.halodb.ohc;
 
 
-interface NativeMemoryAllocator {
+public interface NativeMemoryAllocator {
 
     long allocate(long size);
     void free(long peer);

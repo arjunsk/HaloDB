@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-class SegmentNonMemoryPool<V> extends Segment<V> {
+public class SegmentNonMemoryPool<V> extends Segment<V> {
 
     private static final Logger logger = LoggerFactory.getLogger(SegmentNonMemoryPool.class);
 

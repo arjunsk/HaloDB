@@ -5,7 +5,7 @@
 
 package com.oath.halodb.pojo;
 
-class Versions {
+public class Versions {
 
   static final int CURRENT_DATA_FILE_VERSION = 0;
   static final int CURRENT_INDEX_FILE_VERSION = 0;

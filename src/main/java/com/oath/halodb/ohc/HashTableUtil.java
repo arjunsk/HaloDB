@@ -10,7 +10,7 @@ package com.oath.halodb.ohc;
 
 import com.oath.halodb.ohc.NonMemoryPoolHashEntries;
 
-final class HashTableUtil {
+public final class HashTableUtil {
 
 // Hash bucket-table
 

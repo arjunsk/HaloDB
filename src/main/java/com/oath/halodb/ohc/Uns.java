@@ -25,7 +25,7 @@ import java.util.StringTokenizer;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-final class Uns {
+public final class Uns {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Uns.class);
 

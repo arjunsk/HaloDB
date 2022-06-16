@@ -21,7 +21,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-class SegmentWithMemoryPool<V> extends Segment<V> {
+public class SegmentWithMemoryPool<V> extends Segment<V> {
 
     private static final Logger logger = LoggerFactory.getLogger(SegmentWithMemoryPool.class);
 

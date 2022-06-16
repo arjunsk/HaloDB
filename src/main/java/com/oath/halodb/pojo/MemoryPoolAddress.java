@@ -9,7 +9,7 @@ package com.oath.halodb.pojo;
  * Represents the address of an entry in the memory pool. It will have two components: the index of the chunk which
  * contains the entry and the offset within the chunk.
  */
-class MemoryPoolAddress {
+public class MemoryPoolAddress {
 
     final byte chunkIndex;
     final int chunkOffset;

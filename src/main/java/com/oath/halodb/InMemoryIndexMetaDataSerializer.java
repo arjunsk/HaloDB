@@ -11,7 +11,7 @@ import com.oath.halodb.ohc.HashTableValueSerializer;
 import java.nio.ByteBuffer;
 
 
-class InMemoryIndexMetaDataSerializer implements HashTableValueSerializer<InMemoryIndexMetaData> {
+public class InMemoryIndexMetaDataSerializer implements HashTableValueSerializer<InMemoryIndexMetaData> {
 
     public void serialize(InMemoryIndexMetaData recordMetaData, ByteBuffer byteBuffer) {
         recordMetaData.serialize(byteBuffer);

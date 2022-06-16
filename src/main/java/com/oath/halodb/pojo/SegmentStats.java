@@ -7,7 +7,7 @@ package com.oath.halodb.pojo;
 
 import com.google.common.base.MoreObjects;
 
-class SegmentStats {
+public class SegmentStats {
 
     private final long noOfEntries;
     private final long numberOfChunks;

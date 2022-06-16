@@ -11,7 +11,7 @@ import net.jpountz.xxhash.XXHashFactory;
 
 import java.util.zip.CRC32;
 
-abstract class Hasher {
+public abstract class Hasher {
 
     static Hasher create(HashAlgorithm hashAlgorithm) {
         String cls = forAlg(hashAlgorithm);

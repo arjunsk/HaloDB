@@ -13,7 +13,7 @@ import java.nio.ByteBuffer;
 /**
  * Serialize and deserialize cached data using {@link ByteBuffer}
  */
-interface HashTableValueSerializer<T> {
+public interface HashTableValueSerializer<T> {
 
     void serialize(T value, ByteBuffer buf);
 

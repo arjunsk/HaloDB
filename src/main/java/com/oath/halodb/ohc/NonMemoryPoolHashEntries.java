@@ -13,7 +13,7 @@ import com.oath.halodb.ohc.Uns;
 /**
  * Encapsulates access to hash entries.
  */
-final class NonMemoryPoolHashEntries {
+public final class NonMemoryPoolHashEntries {
 
     // offset of next hash entry in a hash bucket (8 bytes, long)
     static final long ENTRY_OFF_NEXT = 0;

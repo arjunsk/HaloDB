@@ -10,7 +10,7 @@ package com.oath.halodb.ohc;
 import com.google.common.base.Objects;
 import com.oath.halodb.SegmentStats;
 
-final class OffHeapHashTableStats {
+public final class OffHeapHashTableStats {
 
     private final long hitCount;
     private final long missCount;

@@ -10,7 +10,7 @@ import com.oath.halodb.Utils;
 import java.nio.ByteBuffer;
 import java.util.zip.CRC32;
 
-class TombstoneEntry {
+public class TombstoneEntry {
     //TODO: test.
 
     /**

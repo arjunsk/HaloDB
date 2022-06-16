@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-final class OffHeapHashTableImpl<V> implements OffHeapHashTable<V> {
+public final class OffHeapHashTableImpl<V> implements OffHeapHashTable<V> {
 
     private static final Logger logger = LoggerFactory.getLogger(OffHeapHashTableImpl.class);
 

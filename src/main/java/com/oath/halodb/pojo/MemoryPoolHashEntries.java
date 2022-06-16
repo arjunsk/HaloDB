@@ -5,7 +5,7 @@
 
 package com.oath.halodb.pojo;
 
-class MemoryPoolHashEntries {
+public class MemoryPoolHashEntries {
 
     /*
      * chunk index - 1 byte.

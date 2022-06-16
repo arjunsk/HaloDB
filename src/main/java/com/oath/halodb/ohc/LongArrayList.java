@@ -9,7 +9,7 @@ package com.oath.halodb.ohc;
 
 import java.util.Arrays;
 
-final class LongArrayList {
+public final class LongArrayList {
 
     private long[] array;
     private int size;

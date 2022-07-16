@@ -5,10 +5,13 @@
 
 // This code is a derivative work heavily modified from the OHC project. See NOTICE file for copyright and license.
 
-package com.oath.halodb.ohc;
+package com.oath.halodb.ohc.table;
 
 
 import com.oath.halodb.HashTableValueSerializer;
+import com.oath.halodb.ohc.HashTableValueSerializer;
+import com.oath.halodb.ohc.hash.HashAlgorithm;
+import com.oath.halodb.ohc.hash.Hasher;
 
 public class OffHeapHashTableBuilder<V> {
 

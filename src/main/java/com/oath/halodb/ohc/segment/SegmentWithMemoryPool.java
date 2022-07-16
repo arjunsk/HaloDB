@@ -3,11 +3,14 @@
  * Licensed under the terms of the Apache License 2.0. Please refer to accompanying LICENSE file for terms.
  */
 
-package com.oath.halodb;
+package com.oath.halodb.ohc.segment;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.primitives.Ints;
 import com.oath.halodb.domain.MemoryPoolChunk;
+import com.oath.halodb.ohc.hash.HashAlgorithm;
+import com.oath.halodb.ohc.hash.Hasher;
+import com.oath.halodb.ohc.table.OffHeapHashTableBuilder;
 import com.oath.halodb.pojo.MemoryPoolAddress;
 import com.oath.halodb.pojo.MemoryPoolChunk;
 import com.oath.halodb.pojo.MemoryPoolHashEntries;

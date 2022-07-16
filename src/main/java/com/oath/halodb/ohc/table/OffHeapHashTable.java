@@ -5,10 +5,11 @@
 
 // This code is a derivative work heavily modified from the OHC project. See NOTICE file for copyright and license.
 
-package com.oath.halodb.ohc;
+package com.oath.halodb.ohc.table;
 
 import com.oath.halodb.SegmentStats;
 import com.oath.halodb.histo.EstimatedHistogram;
+import com.oath.halodb.ohc.OffHeapHashTableStats;
 
 import java.io.Closeable;
 

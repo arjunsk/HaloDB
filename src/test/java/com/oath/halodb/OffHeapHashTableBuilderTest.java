@@ -8,7 +8,7 @@
 package com.oath.halodb;
 
 import com.oath.halodb.ohc.HashTableValueSerializer;
-import com.oath.halodb.ohc.OffHeapHashTableBuilder;
+import com.oath.halodb.ohc.table.OffHeapHashTableBuilder;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

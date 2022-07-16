@@ -5,9 +5,12 @@
 
 // This code is a derivative work heavily modified from the OHC project. See NOTICE file for copyright and license.
 
-package com.oath.halodb.ohc;
+package com.oath.halodb.ohc.segment;
 
 import com.oath.halodb.histo.EstimatedHistogram;
+import com.oath.halodb.ohc.HashTableValueSerializer;
+import com.oath.halodb.ohc.hash.Hasher;
+import com.oath.halodb.ohc.KeyBuffer;
 
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 

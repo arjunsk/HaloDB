@@ -8,6 +8,7 @@
 package com.oath.halodb.ohc;
 
 import com.oath.halodb.NonMemoryPoolHashEntries;
+import com.oath.halodb.ohc.hash.Hasher;
 
 import java.util.Arrays;
 

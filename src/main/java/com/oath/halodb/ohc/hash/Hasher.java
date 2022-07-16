@@ -5,8 +5,9 @@
 
 // This code is a derivative work heavily modified from the OHC project. See NOTICE file for copyright and license.
 
-package com.oath.halodb.ohc;
+package com.oath.halodb.ohc.hash;
 
+import com.oath.halodb.ohc.Uns;
 import net.jpountz.xxhash.XXHashFactory;
 
 import java.util.zip.CRC32;

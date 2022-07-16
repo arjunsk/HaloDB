@@ -10,9 +10,9 @@ package com.oath.halodb;
 import com.google.common.primitives.Longs;
 import com.oath.halodb.histo.EstimatedHistogram;
 
-import com.oath.halodb.ohc.OffHeapHashTable;
-import com.oath.halodb.ohc.OffHeapHashTableBuilder;
-import com.oath.halodb.ohc.OffHeapHashTableImpl;
+import com.oath.halodb.ohc.table.OffHeapHashTable;
+import com.oath.halodb.ohc.table.OffHeapHashTableBuilder;
+import com.oath.halodb.ohc.table.OffHeapHashTableImpl;
 import com.oath.halodb.ohc.OffHeapHashTableStats;
 import com.oath.halodb.pojo.SegmentStats;
 import org.testng.Assert;

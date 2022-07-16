@@ -5,13 +5,17 @@
 
 // This code is a derivative work heavily modified from the OHC project. See NOTICE file for copyright and license.
 
-package com.oath.halodb.ohc;
+package com.oath.halodb.ohc.segment;
 
 import com.google.common.primitives.Ints;
 import com.oath.halodb.HashTableUtil;
 import com.oath.halodb.NonMemoryPoolHashEntries;
 import com.oath.halodb.histo.EstimatedHistogram;
 
+import com.oath.halodb.ohc.*;
+import com.oath.halodb.ohc.hash.HashAlgorithm;
+import com.oath.halodb.ohc.hash.Hasher;
+import com.oath.halodb.ohc.table.OffHeapHashTableBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

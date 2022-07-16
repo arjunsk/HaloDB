@@ -9,7 +9,7 @@ package com.oath.halodb;
 
 import com.oath.halodb.ohc.KeyBuffer;
 import com.oath.halodb.ohc.NonMemoryPoolHashEntries;
-import com.oath.halodb.ohc.SegmentNonMemoryPool;
+import com.oath.halodb.ohc.segment.SegmentNonMemoryPool;
 
 import java.util.Arrays;
 import java.util.HashMap;

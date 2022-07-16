@@ -5,7 +5,7 @@
 
 // This code is a derivative work heavily modified from the OHC project. See NOTICE file for copyright and license.
 
-package com.oath.halodb.ohc;
+package com.oath.halodb.ohc.hash;
 
 
 public enum HashAlgorithm {

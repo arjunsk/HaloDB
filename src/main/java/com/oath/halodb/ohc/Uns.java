@@ -10,6 +10,10 @@ package com.oath.halodb.ohc;
 import com.oath.halodb.JNANativeAllocator;
 import com.oath.halodb.NativeMemoryAllocator;
 import com.oath.halodb.OffHeapHashTableBuilder;
+import com.oath.halodb.ohc.allocator.JNANativeAllocator;
+import com.oath.halodb.ohc.allocator.NativeMemoryAllocator;
+import com.oath.halodb.ohc.allocator.UnsafeAllocator;
+import com.oath.halodb.ohc.table.OffHeapHashTableBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

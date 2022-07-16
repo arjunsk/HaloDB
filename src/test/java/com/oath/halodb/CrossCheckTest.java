@@ -11,6 +11,9 @@ import com.google.common.primitives.Longs;
 import com.oath.halodb.histo.EstimatedHistogram;
 
 import com.oath.halodb.ohc.*;
+import com.oath.halodb.ohc.hash.HashAlgorithm;
+import com.oath.halodb.ohc.table.OffHeapHashTable;
+import com.oath.halodb.ohc.table.OffHeapHashTableBuilder;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
